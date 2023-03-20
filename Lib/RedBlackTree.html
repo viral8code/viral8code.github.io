@@ -7,10 +7,69 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
-<h2>RedBlackTreeクラス</h2>
+<h1>RedBlackTreeクラス</h1>
+<h3>概要</h3>
 <div>赤黒木です。</div>
 <div>標準ライブラリのTreeMapを切り出して作ったので多分ちゃんと動きます。</div>
 <div>longに特化するために、Iterableインターフェイス等は実装してません。(\(\mathrm{O}(\mathrm{size})\)かかりますが、toArrayメソッドを用いることを推奨します)</div>
+<br>
+<h3>コンストラクタ</h3>
+<h5>RedBlackTree()</h5>
+<div>新しい空の赤黒木を作成します。</div>
+<br>
+<h3>メソッド</h3>
+<h5>boolean add(long key)</h5>
+<div>指定された要素を追加します。</div>
+<div>要素が追加された場合にtrueを、すでに追加済みの場合はfalseを返します。</div>
+<br>
+<h5>long ceiling(long key)</h5>
+<div>keyより大きい(keyを含む)最小の要素を返します。</div>
+<div>条件に合う要素が無い場合はkey-1を返します。</div>
+<br>
+<h5>void clear()</h5>
+<div>この赤黒木を空にします。</div>
+<br>
+<h5>boolean contains(long key)</h5>
+<div>keyがこの赤黒木に含まれるか返します。</div>
+<br>
+<h5>long first()</h5>
+<div>この赤黒木に含まれる最小値を返します。</div>
+<div>この赤黒木が空の場合はNUllPointerExceptionを返します。</div>
+<br>
+<h5>long floor(long key)</h5>
+<div>keyより小さい(keyを含む)最大の要素を返します。</div>
+<div>条件に合う要素が無い場合はkey+1を返します。</div>
+<br>
+<h5>long higher(long key)</h5>
+<div>keyより大きい(keyを含まない)最小の要素を返します。</div>
+<div>条件に合う要素が無い場合はkey-1を返します。</div>
+<br>
+<h5>boolean isEmpty()</h5>
+<div>この赤黒木が空ならtrueを返します。</div>
+<br>
+<h5>long last()</h5>
+<div>この赤黒木に含まれる最大値を返します。</div>
+<div>この赤黒木が空の場合はNUllPointerExceptionを返します。</div>
+<br>
+<h5>long lower(long key)</h5>
+<div>keyより小さい(keyを含まない)最大の要素を返します。</div>
+<div>条件に合う要素が無い場合はkey+1を返します。</div>
+<br>
+<h5>boolean remove(long key)</h5>
+<div>指定された要素を削除します。</div>
+<div>削除する以前にこの赤黒木にkeyが含まれていた場合はtrueを、含まれていなかった場合はfalseを返します。</div>
+<br>
+<h5>int size()</h5>
+<div>この赤黒木の要素数を返します。</div>
+<br>
+<h5>long[] toArray()</h5>
+<div>この赤黒木に含まれる要素を表す配列を返します。</div>
+<div>この配列に含まれる要素は昇順に並んでいることが保証されます。</div>
+<br>
+<h5>String toString()</h5>
+<div>この赤黒木を表すStringを返します。</div>
+<div>このメソッドはArrays.toString(toArray())と同一のStringを返します。</div>
+<br>
 <pre><code class="Java">final class RedBlackTree {
 	private int size;
 	private Entry root;
@@ -22,6 +81,10 @@
 
 	public int size () {
 		return size;
+	}
+
+	public boolean isEmpty () {
+		return size == 0;
 	}
 
 	public boolean contains ( final long key ) {
