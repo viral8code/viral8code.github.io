@@ -4,11 +4,29 @@
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+<!-- MathJax -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js' type='text/javascript'>    
+	MathJax.Hub.Config({
+	HTML: [&#39;input/TeX&#39;,&#39;output/HTML-CSS&#39;],
+	TeX: { extensions: [&#39;AMSmath.js&#39;,&#39;AMSsymbols.js&#39;], 
+	equationNumbers: { autoNumber: &#39;AMS&#39; } },
+	extensions: [&#39;tex2jax.js&#39;],
+	jax: [&#39;input/TeX&#39;,&#39;output/HTML-CSS&#39;],
+	tex2jax: { inlineMath: [ [&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;] ],
+	displayMath: [ [&#39;$$&#39;,&#39;$$&#39;], [&#39;\\[&#39;,&#39;\\]&#39;] ],
+	processEscapes: true },
+	&#39;HTML-CSS&#39;: { availableFonts: [&#39;TeX&#39;],
+	linebreaks: { automatic: true } }
+	});
+</script>
+<!-- /MathJax -->
 </head>
 <body>
-<pre>
-<code class="Java">
-final class RedBlackTree {
+<h2>RedBlackTreeクラス</h2>
+<div>赤黒木です。</div>
+<div>標準ライブラリのTreeMapを切り出して作ったので多分ちゃんと動きます。</div>
+<div>longに特化するために、Iterableインターフェイス等は実装してません。($\mathrm{O}(size)$かかりますが、toArrayメソッドを用いることを推奨します)</div>
+<pre><code class="Java">final class RedBlackTree {
 	private int size;
 	private Entry root;
 
@@ -541,7 +559,6 @@ final class RedBlackTree {
 		return array;
 	}
 }
-</code>
-</pre>
+</code></pre>
 </body>
 </html>
