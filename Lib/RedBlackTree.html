@@ -79,32 +79,27 @@
 		root = null;
 	}
 
-	public int size () {
-		return size;
-	}
-
-	public boolean isEmpty () {
-		return size == 0;
-	}
-
-	public boolean contains ( final long key ) {
-		return getEntry( key ) != null;
-	}
-
-	private Entry getEntry ( final long key ) {
-		Entry p = root;
-		while ( p != null ) {
-			if ( key < p.getValue() ) {
-				p = p.left;
+	public boolean add ( final long key ) {
+		Entry t = root;
+		if ( t == null ) {
+			addEntryToEmptySet( key );
+			return true;
+		}
+		Entry parent;
+		do {
+			parent = t;
+			if ( key < parent.getValue() ) {
+				t = t.left;
 			}
-			else if ( key > p.getValue() ) {
-				p = p.right;
+			else if ( key > parent.getValue() ) {
+				t = t.right;
 			}
 			else {
-				return p;
+				return false;
 			}
-		}
-		return null;
+		} while ( t != null );
+		addEntry( key, parent, key < parent.getValue() );
+		return true;
 	}
 
 	public long ceiling ( final long key ) {
@@ -137,6 +132,28 @@
 			}
 		}
 		return key - 1;
+	}
+
+	public void clear () {
+		size = 0;
+		root = null;
+	}
+
+	public boolean contains ( final long key ) {
+		return getEntry( key ) != null;
+	}
+
+	public long first () {
+		Entry p = root;
+		if ( p != null ) {
+			while ( p.left != null ) {
+				p = p.left;
+			}
+		}
+		else {
+			throw new NullPointerException();
+		}
+		return p.getValue();
 	}
 
 	public long floor ( final long key ) {
@@ -200,6 +217,23 @@
 		return key - 1;
 	}
 
+	public boolean isEmpty () {
+		return size == 0;
+	}
+
+	public long last () {
+		Entry p = root;
+		if ( p != null ) {
+			while ( p.right != null ) {
+				p = p.right;
+			}
+		}
+		else {
+			throw new NullPointerException();
+		}
+		return p.getValue();
+	}
+
 	public long lower ( final long key ) {
 		Entry p = root;
 		while ( p != null ) {
@@ -229,6 +263,49 @@
 		return key + 1;
 	}
 
+	public boolean remove ( final long key ) {
+		final Entry p = getEntry( key );
+		if ( p == null ) {
+			return false;
+		}
+		deleteEntry( p );
+		return true;
+	}
+
+	public int size () {
+		return size;
+	}
+
+	public long[] toArray () {
+		index = 0;
+		return search( new long[size], root );
+	}
+
+	@Override
+	public String toString () {
+		return java.util.Arrays.toString( toArray() );
+	}
+
+	/*
+		以下privateメソッド
+	*/
+
+	private Entry getEntry ( final long key ) {
+		Entry p = root;
+		while ( p != null ) {
+			if ( key < p.getValue() ) {
+				p = p.left;
+			}
+			else if ( key > p.getValue() ) {
+				p = p.right;
+			}
+			else {
+				return p;
+			}
+		}
+		return null;
+	}
+
 	private void addEntry ( final long key, final Entry parent, final boolean addToLeft ) {
 		final Entry e = new Entry( key, parent );
 		if ( addToLeft ) {
@@ -244,43 +321,6 @@
 	private void addEntryToEmptySet ( final long key ) {
 		root = new Entry( key, null );
 		size = 1;
-	}
-
-	public boolean add ( final long key ) {
-		Entry t = root;
-		if ( t == null ) {
-			addEntryToEmptySet( key );
-			return true;
-		}
-		Entry parent;
-		do {
-			parent = t;
-			if ( key < parent.getValue() ) {
-				t = t.left;
-			}
-			else if ( key > parent.getValue() ) {
-				t = t.right;
-			}
-			else {
-				return false;
-			}
-		} while ( t != null );
-		addEntry( key, parent, key < parent.getValue() );
-		return true;
-	}
-
-	public boolean remove ( final long key ) {
-		final Entry p = getEntry( key );
-		if ( p == null ) {
-			return false;
-		}
-		deleteEntry( p );
-		return true;
-	}
-
-	public void clear () {
-		size = 0;
-		root = null;
 	}
 
 	private static final boolean RED = false;
@@ -317,32 +357,6 @@
 		public String toString () {
 			return String.valueOf( value );
 		}
-	}
-
-	public long first () {
-		Entry p = root;
-		if ( p != null ) {
-			while ( p.left != null ) {
-				p = p.left;
-			}
-		}
-		else {
-			throw new NullPointerException();
-		}
-		return p.getValue();
-	}
-
-	public long last () {
-		Entry p = root;
-		if ( p != null ) {
-			while ( p.right != null ) {
-				p = p.right;
-			}
-		}
-		else {
-			throw new NullPointerException();
-		}
-		return p.getValue();
 	}
 
 	private static Entry successor ( final Entry t ) {
@@ -584,16 +598,6 @@
 			}
 		}
 		setColor( x, BLACK );
-	}
-
-	public long[] toArray () {
-		index = 0;
-		return search( new long[size], root );
-	}
-
-	@Override
-	public String toString () {
-		return java.util.Arrays.toString( toArray() );
 	}
 
 	private int index;
