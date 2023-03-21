@@ -1,4 +1,93 @@
-final class AVLTree_Int {
+<html>
+<head>
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h1>AVLTree_Intクラス</h1>
+<h3>概要</h3>
+<div>AVL木です。</div>
+<div>intに特化するために、Iterableインターフェイス等は実装してません。(\(\mathrm{O}(\mathrm{size})\)かかりますが、toArrayメソッドを用いることを推奨します)</div>
+<br>
+<h3>コンストラクタ</h3>
+<h5>AVLTree_Int()</h5>
+<div>新しい空のAVL木を作成します。</div>
+<br>
+<h3>メソッド</h3>
+<h5>boolean add(int key)</h5>
+<div>指定された要素を追加します。</div>
+<div>要素が追加された場合にtrueを、すでに追加済みの場合はfalseを返します。</div>
+<br>
+<h5>int ceiling(int x)</h5>
+<div>xより大きい(xを含む)最小の要素を返します。</div>
+<div>条件に合う要素が無い場合はx-1を返します。</div>
+<br>
+<h5>void clear()</h5>
+<div>このAVL木を空にします。</div>
+<br>
+<h5>boolean contains(int x)</h5>
+<div>xがこのAVL木に含まれるか返します。</div>
+<br>
+<h5>boolean equals(Object o)</h5>
+<div>引数がこのAVL木と同一の要素、要素数を保持してる場合はtrueを返します。</div>
+<br>
+<h5>int first()</h5>
+<div>このAVL木に含まれる最小値を返します。</div>
+<div>このAVL木が空の場合はNUllPointerExceptionを返します。</div>
+<br>
+<h5>int floor(int x)</h5>
+<div>xより小さい(xを含む)最大の要素を返します。</div>
+<div>条件に合う要素が無い場合はx+1を返します。</div>
+<br>
+<h5>int get(int index)</h5>
+<div>このAVL木に含まれる要素のうち、index番目に小さい要素を返します。</div>
+<div>要素数を超えるindexを指定した場合はNullPointerExceptionを返します。</div>
+<br>
+<h5>int hashCode()</h5>
+<div>このAVL木を表すハッシュ値を返します。</div>
+<br>
+<h5>int higher(int x)</h5>
+<div>xより大きい(xを含まない)最小の要素を返します。</div>
+<div>条件に合う要素が無い場合はx-1を返します。</div>
+<br>
+<h5>boolean isEmpty()</h5>
+<div>このAVL木が空ならtrueを返します。</div>
+<br>
+<h5>int last()</h5>
+<div>このAVL木に含まれる最大値を返します。</div>
+<div>このAVL木が空の場合はNUllPointerExceptionを返します。</div>
+<br>
+<h5>int lower(int x)</h5>
+<div>xより小さい(xを含まない)最大の要素を返します。</div>
+<div>条件に合う要素が無い場合はx+1を返します。</div>
+<br>
+<h5>int pollFirst()</h5>
+<div>このAVL木に含まれる最小値を返します(AVL木からこの要素は削除されます)。</div>
+<div>このAVL木が空の場合はNUllPointerExceptionを返します。</div>
+<br>
+<h5>int pollLast()</h5>
+<div>このAVL木に含まれる最大値を返します(AVL木からこの要素は削除されます)。</div>
+<div>このAVL木が空の場合はNUllPointerExceptionを返します。</div>
+<br>
+<h5>boolean remove(int x)</h5>
+<div>指定された要素を削除します。</div>
+<div>削除する以前にこのAVL木にxが含まれていた場合はtrueを、含まれていなかった場合はfalseを返します。</div>
+<br>
+<h5>int size()</h5>
+<div>このAVL木の要素数を返します。</div>
+<br>
+<h5>int[] toArray()</h5>
+<div>このAVL木に含まれる要素を表す配列を返します。</div>
+<div>この配列に含まれる要素は昇順に並んでいることが保証されます。</div>
+<br>
+<h5>String toString()</h5>
+<div>このAVL木を表すStringを返します。</div>
+<div>このメソッドはArrays.toString(toArray())と同一のStringを返します。</div>
+<br>
+<pre><code class="Java">final class AVLTree_Int {
 	private Node root;
 	private int size, hash;
 
@@ -465,8 +554,7 @@ final class AVLTree_Int {
 		int rs = node.right != null ? node.right.size : 0;
 		node.size = ls + rs + 1;
 	}
-
-	public Node getRoot () {
-		return root;
-	}
 }
+</code></pre>
+</body>
+</html>
