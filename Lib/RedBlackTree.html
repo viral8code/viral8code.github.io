@@ -5,51 +5,6 @@
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/javascript">
-// DOMをロードしたら読み込み
-addEventListener('DOMContentLoaded', function () {
-
-//記事部分取得
-const entryContent = document.getElementsByClassName('entry-content');
-
-if (entryContent) {
-  // pre取得
-  const preArea = document.querySelectorAll(".entry-content > pre");
-
-  // 繰り返し処理
-  preArea.forEach((pre, index) => {
-  // preにid付与
-  pre.setAttribute("id", "copyArea");
-  // btn作る
-  const copyBtn = document.createElement("button");
-  copyBtn.setAttribute("id", "copybtn"); //id付与
-  copyBtn.textContent = "コピー"; //テキスト挿入
-  pre.insertAdjacentElement("beforebegin", copyBtn);//copyBtn挿入
-
-  // pre内テキスト取得
-  const copyText = pre.textContent;
-
-  // copy関数
-  function copy() {
-    navigator.clipboard.writeText(copyText).then(function () {
-      // コピーに成功した場合の処理
-      copyBtn.classList.add("toolChip"); //ツールチップ用クラス付与
-
-      // 時間経過でツールチップ非表示
-      setTimeout(() => {
-        copyBtn.classList.remove("toolChip");
-      }, 1500);
-    });
-  }
-
-  // ボタンクリックで、上で定めたcopy関数実行
-  copyBtn.addEventListener("click", copy);
-  });
- }
-}
-}, !1);
-</script>
-<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <title>viral's library:RedBlackTree</title>
