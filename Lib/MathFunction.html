@@ -1,0 +1,253 @@
+<html>
+<head>
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<title>viral's library:MathFunction</title>
+<h1>MathFunctionクラス</h1>
+<h3>概要</h3>
+<div>後で書く。</div>
+<br>
+<h3>コンストラクタ</h3>
+<h5></h5>
+<div>後で書く。</div>
+<br>
+<h3>メソッド</h3>
+<h5></h5>
+<div>後で書く。</div>
+<br>
+<pre><code class="java">final class MathFunction {
+
+	/**
+	 * aとbの最大公約数を求めます。
+	 *
+	 * @param a
+	 * @param b
+	 *
+	 * @return aとbの最大公約数
+	 */
+	public static long gcd ( long a, long b ) {
+		a = Math.abs( a );
+		b = Math.abs( b );
+		if ( b == 0 ) {
+			return a;
+		}
+		long temp;
+		while ( ( temp = a % b ) != 0 ) {
+			a = b;
+			b = temp;
+		}
+		return b;
+	}
+
+	/**
+	 * aとbの最小公倍数を求めます。
+	 * オーバーフロー検知は出来ません。
+	 *
+	 * @param a
+	 * @param b
+	 *
+	 * @return aとbの最小公倍数
+	 */
+	public static long lcm ( long a, long b ) {
+		return a / gcd( a, b ) * b;
+	}
+
+	/**
+	 * 引数が素数か判定します。
+	 * 合成数を誤判定する確率は1/2^20以下です。
+	 *
+	 * @param num 検査対象
+	 *
+	 * @return numが素数である可能性があるならtrue、確実に合成数ならfalse
+	 */
+	public static boolean isPrime ( long num ) {
+		return BigInteger.valueOf( num ).isProbablePrime( 20 );
+	}
+
+	/**
+	 * num以下の素数を列挙します。
+	 *
+	 * @param num 素数を探す上限値
+	 *
+	 * @return num以下の素数のint型配列
+	 */
+	public static int[] primes ( int num ) {
+		BitSet numbers = new BitSet( num + 1 );
+		numbers.set( 2, num + 1 );
+		for ( int i = 2; i <= Math.sqrt( num ); i++ ) {
+			if ( numbers.get( i ) ) {
+				for ( int j = i * i; j <= num; j += i ) {
+					numbers.clear( j );
+				}
+			}
+		}
+		int[] answer = new int[numbers.cardinality()];
+		int i = 2, index = 0;
+		do {
+			i = numbers.nextSetBit( i );
+			answer[index++] = i++;
+		} while ( index != answer.length );
+		return answer;
+	}
+
+	/**
+	 * a**bを計算します。
+	 *
+	 * @param a
+	 * @param b
+	 *
+	 * @return a**b
+	 */
+	public static long pow ( long a, long b ) {
+		long ans = 1;
+		while ( b > 0 ) {
+			if ( ( b & 1 ) == 1 ) {
+				ans *= a;
+			}
+			a *= a;
+			b >>= 1;
+		}
+		return ans;
+	}
+
+	/**
+	 * a**bをmodで割ったあまりを計算します。
+	 *
+	 * @param a
+	 * @param b
+	 * @param mod
+	 *
+	 * @return a**bをmodで割ったあまり
+	 */
+	public static long modPow ( long a, long b, long mod ) {
+		long ans = 1;
+		a %= mod;
+		while ( b > 0 ) {
+			if ( ( b & 1 ) == 1 ) {
+				ans *= a;
+			}
+			ans %= mod;
+			a *= a;
+			a %= mod;
+			b >>= 1;
+		}
+		return ans;
+	}
+
+	/**
+	 * nCrを計算します。
+	 *
+	 * @param n
+	 * @param r
+	 *
+	 * @return nCr
+	 */
+	public static long combi ( long n, long r ) {
+		long ans = 1;
+		if ( r <= 0 || n < r ) {
+			throw new IllegalArgumentException( "index is illegal:(" + n + "," + r + ")" );
+		}
+		r = Math.min( n - r, r );
+		for ( int i = 0; i < r; i++ ) {
+			ans *= n - i;
+			ans /= i + 1;
+		}
+		return ans;
+	}
+
+	/**
+	 * nCrをmodで割ったあまりを計算します。
+	 *
+	 * @param n
+	 * @param r
+	 * @param mod
+	 *
+	 * @return nCrをmodで割ったあまり
+	 */
+	public static long modCombi ( long n, long r, long mod ) {
+		long ans = 1;
+		r = Math.min( n - r, r );
+		for ( int i = 0; i < r; i++ ) {
+			ans *= n - i;
+			ans %= mod;
+			ans *= modPow( i + 1, mod - 2, mod );
+			ans %= mod;
+		}
+		return ans;
+	}
+
+	/**
+	 * 引数の前半二点、後半二点で構成される二線分が交差しているか返します。
+	 *
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @param x3
+	 * @param y3
+	 * @param x4
+	 * @param y4
+	 *
+	 * @return 交差している(線分の端が他方の線分上に存在する場合も含む)場合は1、同一線分直線上なら0、それ以外は-1
+	 */
+	public static int isCrossed ( int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4 ) {
+		double s1 = ( x1 - x2 ) * ( y3 - y1 ) - ( y1 - y2 ) * ( x3 - x1 );
+		double t1 = ( x1 - x2 ) * ( y4 - y1 ) - ( y1 - y2 ) * ( x4 - x1 );
+		double s2 = ( x3 - x4 ) * ( y1 - y3 ) - ( y3 - y4 ) * ( x1 - x3 );
+		double t2 = ( x3 - x4 ) * ( y2 - y3 ) - ( y3 - y4 ) * ( x2 - x3 );
+		double temp1 = s1 * t1;
+		double temp2 = s2 * t2;
+		if ( temp1 > 0 || temp2 > 0 ) {
+			return -1;
+		}
+		if ( temp1 == 0 && temp2 == 0 ) {
+			return 0;
+		}
+		return 1;
+	}
+
+	/**
+	 * 引数の前半二点、後半二点で構成される二線分が交差しているか返します。
+	 *
+	 * @param p1
+	 * @param p2
+	 * @param p3
+	 * @param p4
+	 *
+	 * @return 交差している(線分の端が他方の線分上に存在する場合も含む)場合は1、同一線分直線上なら0、それ以外は-1
+	 */
+	public static int isCrossed ( Point p1, Point p2, Point p3, Point p4 ) {
+		return isCrossed( p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y );
+	}
+
+	/**
+	 * 指定された頂点を順に結んで出来上がる多角形が凸多角形か判定します。
+	 *
+	 * @param points 多角形を構成する点
+	 *
+	 * @return 多角形が凸多角形ならtrue
+	 */
+	public static boolean isConvex ( Point... points ) {
+		int n = points.length;
+		if ( n < 3 ) {
+			return false;
+		}
+		if ( n == 3 ) {
+			return true;
+		}
+		boolean conv = true;
+		for ( int i = 0; i < n; i++ ) {
+			int result = isCrossed( points[i], points[( i + 2 ) % n], points[( i + 1 ) % n], points[( i + 1 + n / 2 ) % n] );
+			conv &= result >= 0;
+		}
+		return conv;
+	}
+}
+</code></pre>
+</body>
+</html>

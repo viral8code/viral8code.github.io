@@ -1,10 +1,32 @@
-final class AVLTree_Multi_Int {
+<html>
+<head>
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<title>viral's library:AVLTree_Multi_Long</title>
+<h1>AVLTree_Multi_Longクラス</h1>
+<h3>概要</h3>
+<div>後で書く。</div>
+<br>
+<h3>コンストラクタ</h3>
+<h5></h5>
+<div>後で書く。</div>
+<br>
+<h3>メソッド</h3>
+<h5></h5>
+<div>後で書く。</div>
+<br>
+<pre><code class="java">final class AVLTree_Multi_Long {
 	private Node root;
 	private long size;
 	private int uniqueSize;
 	private int hash;
 
-	public AVLTree_Multi_Int () {
+	public AVLTree_Multi_Long () {
 		size = 0;
 		uniqueSize = 0;
 		root = null;
@@ -12,21 +34,21 @@ final class AVLTree_Multi_Int {
 	}
 
 	static final private class Node {
-		int value;
+		long value;
 		long count, size;
 		int height;
 		Node left, right, parent;
 
-		public Node ( final Node p, final int v, final long c ) {
+		public Node ( final Node p, final long v, final long c ) {
 			value = v;
 			parent = p;
 			count = c;
 			height = 1;
-			size = c;
+			size = 1;
 		}
 	}
 
-	public void add ( final int x ) {
+	public void add ( final long x ) {
 		if ( root == null ) {
 			root = new Node( null, x, 1 );
 			uniqueSize++;
@@ -57,14 +79,14 @@ final class AVLTree_Multi_Int {
 				else {
 					par.right = new Node( par, x, 1 );
 				}
+				fix( par );
 			}
-			fix( par );
 		}
 		++size;
 		hash ^= ( int )x;
 	}
 
-	public void add ( final int x , final long sum ) {
+	public void add ( final long x , final long sum ) {
 		if ( root == null ) {
 			root = new Node( null, x, sum );
 			uniqueSize++;
@@ -84,7 +106,6 @@ final class AVLTree_Multi_Int {
 				else {
 					bool = false;
 					now.count += sum;
-					fix( now );
 					break;
 				}
 			} while ( now != null );
@@ -103,7 +124,7 @@ final class AVLTree_Multi_Int {
 		hash ^= ( int )x;
 	}
 
-	public int get ( long index ) {
+	public long get ( long index ) {
 		if ( root == null || size <= index ) {
 			throw new NullPointerException();
 		}
@@ -124,7 +145,7 @@ final class AVLTree_Multi_Int {
 		return now.value;
 	}
 
-	public boolean remove ( final int x ) {
+	public boolean remove ( final long x ) {
 		Node n = getNode( x );
 		if ( n == null ) {
 			return false;
@@ -134,13 +155,13 @@ final class AVLTree_Multi_Int {
 		return true;
 	}
 
-	public long removeAll ( final int x ) {
-		Node n = getNode( x );
+	public long removeAll ( final long x ) {
+		final Node n = getNode( x );
 		if ( n == null ) {
 			return 0;
 		}
 		size -= n.count;
-		long ans = n.count;
+		final long ans = n.count;
 		n.count = 0;
 		delete( n );
 		return ans;
@@ -150,7 +171,6 @@ final class AVLTree_Multi_Int {
 		if ( node != null ) {
 			if ( node.count > 1 ) {
 				node.count--;
-				fix( node );
 				return;
 			}
 			if ( node.left == null && node.right == null ) {
@@ -174,7 +194,6 @@ final class AVLTree_Multi_Int {
 					Node rep = getFirstNode( node.right );
 					node.value = rep.value;
 					node.count = rep.count;
-					rep.count = 0;
 					delete( rep );
 				}
 				else {
@@ -198,7 +217,7 @@ final class AVLTree_Multi_Int {
 		}
 	}
 
-	private Node getNode ( final int x ) {
+	private Node getNode ( final long x ) {
 		Node now = root;
 		while ( now != null ) {
 			if ( x < now.value ) {
@@ -214,7 +233,7 @@ final class AVLTree_Multi_Int {
 		return now;
 	}
 
-	public int first () {
+	public long first () {
 		if ( root == null ) {
 			throw new NullPointerException();
 		}
@@ -231,7 +250,7 @@ final class AVLTree_Multi_Int {
 		return par;
 	}
 
-	public int last () {
+	public long last () {
 		if ( root == null ) {
 			throw new NullPointerException();
 		}
@@ -248,14 +267,14 @@ final class AVLTree_Multi_Int {
 		return par;
 	}
 
-	public boolean contains ( final int x ) {
+	public boolean contains ( final long x ) {
 		if ( root == null ) {
 			return false;
 		}
 		return getNode( x ) != null;
 	}
 
-	public long sum ( final int x ) {
+	public long sum ( final long x ) {
 		if ( root == null ) {
 			return 0;
 		}
@@ -263,7 +282,7 @@ final class AVLTree_Multi_Int {
 		return node != null ? node.count : 0;
 	}
 
-	public int pollFirst () {
+	public long pollFirst () {
 		if ( root == null ) {
 			throw new NullPointerException();
 		}
@@ -274,7 +293,7 @@ final class AVLTree_Multi_Int {
 		return min.value;
 	}
 
-	public int pollLast () {
+	public long pollLast () {
 		if ( root == null ) {
 			throw new NullPointerException();
 		}
@@ -285,14 +304,14 @@ final class AVLTree_Multi_Int {
 		return max.value;
 	}
 
-	public int ceiling ( final int x ) {
+	public long ceiling ( final long x ) {
 		if ( root == null ) {
 			throw new NullPointerException();
 		}
 		return ceiling( root, x );
 	}
 
-	private int ceiling ( Node node, final int x ) {
+	private long ceiling ( Node node, final long x ) {
 		Node ans = new Node( null, x - 1, 0 );
 		while ( node != null ) {
 			if ( x < node.value ) {
@@ -309,14 +328,14 @@ final class AVLTree_Multi_Int {
 		return ans.value;
 	}
 
-	public int higher ( final int x ) {
+	public long higher ( final long x ) {
 		if ( root == null ) {
 			throw new NullPointerException();
 		}
 		return ceiling( root, x );
 	}
 
-	private int higher ( Node node, final int x ) {
+	private long higher ( Node node, final long x ) {
 		Node ans = new Node( null, x - 1, 0 );
 		while ( node != null ) {
 			if ( x <= node.value ) {
@@ -330,14 +349,14 @@ final class AVLTree_Multi_Int {
 		return ans.value;
 	}
 
-	public int floor ( final int x ) {
+	public long floor ( final long x ) {
 		if ( root == null ) {
 			throw new NullPointerException();
 		}
 		return floor( root, x );
 	}
 
-	private int floor ( Node node, final int x ) {
+	private long floor ( Node node, final long x ) {
 		Node ans = new Node( null, x + 1, 0 );
 		while ( node != null ) {
 			if ( x > node.value ) {
@@ -354,14 +373,14 @@ final class AVLTree_Multi_Int {
 		return ans.value;
 	}
 
-	public int lower ( final int x ) {
+	public long lower ( final long x ) {
 		if ( root == null ) {
 			throw new NullPointerException();
 		}
 		return floor( root, x );
 	}
 
-	private int lower ( Node node, final int x ) {
+	private long lower ( Node node, final long x ) {
 		Node ans = new Node( null, x + 1, 0 );
 		while ( node != null ) {
 			if ( x >= node.value ) {
@@ -375,7 +394,7 @@ final class AVLTree_Multi_Int {
 		return ans.value;
 	}
 
-	public int size () {
+	public long size () {
 		return uniqueSize;
 	}
 
@@ -428,8 +447,8 @@ final class AVLTree_Multi_Int {
 
 	@Override
 	public boolean equals ( final Object o ) {
-		if ( o instanceof AVLTree_Multi_Int ) {
-			final AVLTree_Multi_Int tree = ( AVLTree_Multi_Int )o;
+		if ( o instanceof AVLTree_Multi_Long ) {
+			final AVLTree_Multi_Long tree = ( AVLTree_Multi_Long )o;
 			if ( size == tree.size() ) {
 				return false;
 			}
@@ -474,7 +493,9 @@ final class AVLTree_Multi_Int {
 				}
 				rotateL( node );
 			}
-			setStates( node );
+			else {
+				setStates( node );
+			}
 			node = node.parent;
 		}
 	}
@@ -538,3 +559,6 @@ final class AVLTree_Multi_Int {
 		return root;
 	}
 }
+</code></pre>
+</body>
+</html>
