@@ -56,7 +56,7 @@
 
 	public void shiftLeft ( int num ) {
 		if ( num >= size << 6 ) {
-			Arrays.fill( bit, 0L );
+			java.util.Arrays.fill( bit, 0L );
 			return;
 		}
 		final int n = num >> 6;
@@ -72,7 +72,7 @@
 
 	public void shiftRight ( int num ) {
 		if ( num >= size << 6 ) {
-			Arrays.fill( bit, 0L );
+			java.util.Arrays.fill( bit, 0L );
 			return;
 		}
 		final int n = num >> 6;

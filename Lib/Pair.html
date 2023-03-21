@@ -1,0 +1,77 @@
+<html>
+<head>
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<title>viral's library:Pair</title>
+<h1>Pairクラス</h1>
+<h3>概要</h3>
+<div>後で書く。</div>
+<br>
+<h3>コンストラクタ</h3>
+<h5></h5>
+<div>後で書く。</div>
+<br>
+<h3>メソッド</h3>
+<h5></h5>
+<div>後で書く。</div>
+<br>
+<pre><code class="java">class Pair&lt;K extends Comparable&lt;K&gt;, V extends Comparable&lt;V&gt;&gt;
+		implements Comparable&lt;Pair&lt;K, V&gt;&gt; {
+	private java.util.AbstractMap.SimpleEntry&lt;K, V&gt; map;
+
+	public Pair ( K key, V value ) {
+		map = new java.util.AbstractMap.SimpleEntry&lt;&gt;( key, value );
+	}
+
+	public K getKey () {
+		return map.getKey();
+	}
+
+	public V getValue () {
+		return map.getValue();
+	}
+
+	public K setKey ( K key ) {
+		K oldKey = map.getKey();
+		V value = map.getValue();
+		map = new java.util.AbstractMap.SimpleEntry&lt;&gt;( key, value );
+		return oldKey;
+	}
+
+	public V setValue ( V value ) {
+		return map.setValue( value );
+	}
+
+	@Override
+	public int compareTo ( Pair&lt;K, V&gt; pair ) {
+		int com = getKey().compareTo( pair.getKey() );
+		return com != 0 ? com : getValue().compareTo( pair.getValue() );
+	}
+
+	@Override
+	public boolean equals ( Object o ) {
+		if ( o instanceof Pair&lt;?, ?&gt; ) {
+			Pair&lt;?, ?&gt; pair = ( Pair&lt;?, ?&gt; )o;
+			return getKey().equals( pair.getKey() ) && getValue().equals( pair.getValue() );
+		}
+		return false;
+	}
+
+	@Override
+	public String toString () {
+		return getKey() + "=" + getValue();
+	}
+
+	@Override
+	public int hashCode () {
+		return ( getKey().hashCode() << 2 ) ^ ( getValue().hashCode() );
+	}
+}
+</code></pre>
+</body>
+</html>

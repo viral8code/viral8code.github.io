@@ -187,7 +187,7 @@
 	 *
 	 * @param array ソートする配列
 	 */
-	public static <E extends Comparable<E>> void sort ( E[] array ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; void sort ( E[] array ) {
 		for ( int i = 0; i < array.length; i++ ) {
 			int j = i;
 			while ( j > 0 && array[( j - 1 ) / 2].compareTo( array[j] ) < 0 ) {
@@ -228,7 +228,7 @@
 	 *
 	 * @param arrays ソートする配列
 	 */
-	public static <E extends Comparable<E>> void sort ( E[][] arrays ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; void sort ( E[][] arrays ) {
 		for ( int i = 0; i < arrays.length; i++ ) {
 			int j = i;
 			while ( j > 0 && compare( arrays[( j - 1 ) / 2], arrays[j] ) < 0 ) {
@@ -313,7 +313,7 @@
 	 *
 	 * @return a.compareTo(b)として想定されるint型戻り値
 	 */
-	private static <E extends Comparable<E>> int compare ( E[] a, E[] b ) {
+	private static &lt;E extends Comparable&lt;E&gt;&gt; int compare ( E[] a, E[] b ) {
 		int len = Math.min( a.length, b.length );
 		for ( int i = 0; i < len; i++ ) {
 			int result = a[i].compareTo( b[i] );
@@ -405,7 +405,7 @@
 	 *
 	 * @return 指定された要素以下で最大のインデックス
 	 */
-	public static <E extends Comparable<E>> int downSearch ( E[] array, E value ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; int downSearch ( E[] array, E value ) {
 		int a = 0, b = array.length - 1, ans = -1, c;
 		while ( a - b < 1 ) {
 			c = ( a + b ) / 2;
@@ -430,7 +430,7 @@
 	 *
 	 * @return 指定された要素以下で最大のインデックス
 	 */
-	public static <E extends Comparable<E>> int downSearch ( List<E> list, E value ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; int downSearch ( java.util.List&lt;E&gt; list, E value ) {
 		int a = 0, b = list.size() - 1, ans = -1, c;
 		while ( a - b < 1 ) {
 			c = ( a + b ) / 2;
@@ -505,7 +505,7 @@
 	 *
 	 * @return 指定された要素以上で最小のインデックス
 	 */
-	public static <E extends Comparable<E>> int upSearch ( E[] array, E value ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; int upSearch ( E[] array, E value ) {
 		int a = 0, b = array.length - 1, ans = array.length, c;
 		while ( a - b < 1 ) {
 			c = ( a + b ) / 2;
@@ -530,7 +530,7 @@
 	 *
 	 * @return 指定された要素以上で最小のインデックス
 	 */
-	public static <E extends Comparable<E>> int upSearch ( List<E> list, E value ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; int upSearch ( java.util.List&lt;E&gt; list, E value ) {
 		int a = 0, b = list.size() - 1, ans = list.size(), c;
 		while ( a - b < 1 ) {
 			c = ( a + b ) / 2;
@@ -602,7 +602,7 @@
 	 *
 	 * @return 条件を満たす最大のインデックス
 	 */
-	public static <E extends Comparable<E>> int underSearch ( E[] array, E value ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; int underSearch ( E[] array, E value ) {
 		int a = 0, b = array.length - 1, ans = -1, c;
 		while ( a - b < 1 ) {
 			c = ( a + b ) / 2;
@@ -626,7 +626,7 @@
 	 *
 	 * @return 条件を満たす最大のインデックス
 	 */
-	public static <E extends Comparable<E>> int underSearch ( List<E> list, E value ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; int underSearch ( java.util.List&lt;E&gt; list, E value ) {
 		int a = 0, b = list.size() - 1, ans = -1, c;
 		while ( a - b < 1 ) {
 			c = ( a + b ) / 2;
@@ -698,7 +698,7 @@
 	 *
 	 * @return 条件を満たす最小のインデックス
 	 */
-	public static <E extends Comparable<E>> int overSearch ( E[] array, E value ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; int overSearch ( E[] array, E value ) {
 		int a = 0, b = array.length - 1, ans = array.length, c;
 		while ( a - b < 1 ) {
 			c = ( a + b ) / 2;
@@ -722,7 +722,7 @@
 	 *
 	 * @return 条件を満たす最小のインデックス
 	 */
-	public static <E extends Comparable<E>> int overSearch ( List<E> list, E value ) {
+	public static &lt;E extends Comparable&lt;E&gt;&gt; int overSearch ( java.util.List&lt;E&gt; list, E value ) {
 		int a = 0, b = list.size() - 1, ans = list.size(), c;
 		while ( a - b < 1 ) {
 			c = ( a + b ) / 2;
@@ -792,7 +792,7 @@
 	 */
 	public static int lis ( int[] array, boolean include ) {
 		int[] list = new int[array.length];
-		Arrays.fill( list, Integer.MAX_VALUE );
+		java.util.Arrays.fill( list, Integer.MAX_VALUE );
 		for ( int num: array ) {
 			int index = include ? overSearch( list, num ) : upSearch( list, num );
 			list[index] = Math.min( list[index], num );
@@ -812,7 +812,7 @@
 	 */
 	public static int lis ( int[][] arrays, int p, boolean include ) {
 		int[] list = new int[arrays.length];
-		Arrays.fill( list, Integer.MAX_VALUE );
+		java.util.Arrays.fill( list, Integer.MAX_VALUE );
 		for ( int[] array: arrays ) {
 			int index = include ? overSearch( list, array[p] ) : upSearch( list, array[p] );
 			list[index] = Math.min( list[index], array[p] );
@@ -831,7 +831,7 @@
 	 */
 	public static int lis ( long[] array, boolean include ) {
 		long[] list = new long[array.length];
-		Arrays.fill( list, Long.MAX_VALUE );
+		java.util.Arrays.fill( list, Long.MAX_VALUE );
 		for ( long num: array ) {
 			int index = include ? overSearch( list, num ) : upSearch( list, num );
 			list[index] = Math.min( list[index], num );
@@ -851,7 +851,7 @@
 	 */
 	public static int lis ( long[][] arrays, int p, boolean include ) {
 		long[] list = new long[arrays.length];
-		Arrays.fill( list, Long.MAX_VALUE );
+		java.util.Arrays.fill( list, Long.MAX_VALUE );
 		for ( long[] array: arrays ) {
 			int index = include ? overSearch( list, array[p] ) : upSearch( list, array[p] );
 			list[index] = Math.min( list[index], array[p] );
@@ -868,16 +868,16 @@
 	 *
 	 * @return トポロジカルソート済み有向グラフ
 	 */
-	public static int[][] topologicalSort ( ArrayList<ArrayList<Integer>> route ) {
+	public static int[][] topologicalSort ( java.util.ArrayList&lt;java.util.ArrayList&lt;Integer&gt;&gt; route ) {
 		int[] count = new int[route.size()];
 		int pathCount = 0;
-		for ( ArrayList<Integer> path: route ) {
+		for ( java.util.ArrayList&lt;Integer&gt; path: route ) {
 			for ( int point: path ) {
 				pathCount++;
 				count[point]++;
 			}
 		}
-		final ArrayDeque<Integer> deq = new ArrayDeque<>();
+		final java.util.ArrayDeque&lt;Integer&gt; deq = new java.util.ArrayDeque&lt;&gt;();
 		for ( int i = 1; i < count.length; i++ ) {
 			if ( count[i] == 0 ) {
 				deq.add( i );
@@ -915,7 +915,7 @@
 				count[point]++;
 			}
 		}
-		final ArrayDeque<Integer> deq = new ArrayDeque<>();
+		final java.util.ArrayDeque&lt;Integer&gt; deq = new java.util.ArrayDeque&lt;&gt;();
 		for ( int i = 1; i < count.length; i++ ) {
 			if ( count[i] == 0 ) {
 				deq.add( i );

@@ -1,0 +1,79 @@
+<html>
+<head>
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<title>viral's library:UnionFind</title>
+<h1>UnionFindクラス</h1>
+<h3>概要</h3>
+<div>後で書く。</div>
+<br>
+<h3>コンストラクタ</h3>
+<h5></h5>
+<div>後で書く。</div>
+<br>
+<h3>メソッド</h3>
+<h5></h5>
+<div>後で書く。</div>
+<br>
+<pre><code class="java">final class UnionFind {
+	private final int[] par, rank, size;
+	private int count;
+
+	public UnionFind ( int N ) {
+		count = N;
+		par = new int[N];
+		rank = new int[N];
+		size = new int[N];
+		java.util.Arrays.fill( par, -1 );
+		java.util.Arrays.fill( size, 1 );
+	}
+
+	public int root ( int x ) {
+		if ( par[x] == -1 ) {
+			return x;
+		}
+		else {
+			return par[x] = root( par[x] );
+		}
+	}
+
+	public boolean isSame ( int x, int y ) {
+		return root( x ) == root( y );
+	}
+
+	public boolean unite ( int x, int y ) {
+		int rx = root( x );
+		int ry = root( y );
+		if ( rx == ry ) {
+			return false;
+		}
+		if ( rank[rx] < rank[ry] ) {
+			int temp = rx;
+			rx = ry;
+			ry = temp;
+		}
+		par[ry] = rx;
+		if ( rank[rx] == rank[ry] ) {
+			++rank[rx];
+		}
+		size[rx] += size[ry];
+		--count;
+		return true;
+	}
+
+	public int groupCount () {
+		return count;
+	}
+
+	public int size ( int x ) {
+		return size[root( x )];
+	}
+}
+</code></pre>
+</body>
+</html>

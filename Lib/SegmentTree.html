@@ -35,7 +35,7 @@
 		size -= include ? 1 : 0;
 		node = new Object[N];
 		this.def = def;
-		Arrays.fill( node, this.def );
+		java.util.Arrays.fill( node, this.def );
 	}
 
 	public SegmentTree ( int n, E def ) {
