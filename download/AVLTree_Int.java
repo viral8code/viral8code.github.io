@@ -223,10 +223,10 @@ final class AVLTree_Int {
     private int ceiling ( Node node, final int x ) {
         Node ans = new Node( null, x - 1 );
         while ( node != null ) {
-            if ( x < node.value ) {
+            if ( x > node.value ) {
                 node = node.right;
             }
-            else if ( x > node.value ) {
+            else if ( x < node.value ) {
                 ans = node;
                 node = node.left;
             }
@@ -241,13 +241,13 @@ final class AVLTree_Int {
         if ( root == null ) {
             throw new NullPointerException();
         }
-        return ceiling( root, x );
+        return higher( root, x );
     }
 
     private int higher ( Node node, final int x ) {
         Node ans = new Node( null, x - 1 );
         while ( node != null ) {
-            if ( x <= node.value ) {
+            if ( x >= node.value ) {
                 node = node.right;
             }
             else {
@@ -268,10 +268,10 @@ final class AVLTree_Int {
     private int floor ( Node node, final int x ) {
         Node ans = new Node( null, x + 1 );
         while ( node != null ) {
-            if ( x > node.value ) {
+            if ( x < node.value ) {
                 node = node.left;
             }
-            else if ( x < node.value ) {
+            else if ( x > node.value ) {
                 ans = node;
                 node = node.right;
             }
@@ -286,13 +286,13 @@ final class AVLTree_Int {
         if ( root == null ) {
             throw new NullPointerException();
         }
-        return floor( root, x );
+        return lower( root, x );
     }
 
     private int lower ( Node node, final int x ) {
         Node ans = new Node( null, x + 1 );
         while ( node != null ) {
-            if ( x >= node.value ) {
+            if ( x <= node.value ) {
                 node = node.left;
             }
             else {
