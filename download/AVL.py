@@ -413,13 +413,13 @@ class AVL:
 				index2 += 1
 		return self
 
-	def __or__(self,other):
+	def __ior__(self,other):
 		li = other.tolist()
 		for num in li:
 			self.add(num)
 		return self
 
-	def __xor__(self,other):
+	def __ixor__(self,other):
 		li1 = self.tolist()
 		li2 = other.tolist()
 		index1 = 0

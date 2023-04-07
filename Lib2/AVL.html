@@ -14,11 +14,105 @@
 <div>AVL木です。</div>
 <br>
 <h3>__init__(li=[])</h3>
-<div>liを元にAVL木を構築します。(\ \mathrm{O(len(li) log len(li))} \)かかります</div>
+<div>liを元にAVL木を構築します。\( \mathrm{O(len(li) log len(li))} \)かかります</div>
 <br>
-<h3>メソッド</h3>
-<h5></h5>
-<div>後で書く。</div>
+<h3>add(x)</h3>
+<div>xを追加します。追加出来た時はTrue、既に追加済みの時はFalseを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>__getitem__(index)</h3>
+<div>tree[index]などで小さい方からindex番目(0-indexed)の要素を取得します。</div>
+<div>indexが負の値か、len(tree)以上の場合はNoneを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>getindex(value)</h3>
+<div>このAVL木におけるvalueのインデックスを返します(0-indexed)。</div>
+<div>もしvalueが含まれていない場合は挿入されるべきインデックスをxとすると、~x(つまり、-(x+1))を返します。</div>
+<div>すなわち、valueが含まれていない場合は負の値が返ってくることが保証されます。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>remove(x)</h3>
+<div>xをこのAVL木から削除します。このAVL木にxが含まれていた場合はTrue、含まれていなかった場合はFalseを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>first()</h3>
+<div>このAVL木の最小の要素を返します。このAVL木が空の場合はNoneを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>last()</h3>
+<div>このAVL木の最大の要素を返します。このAVL木が空の場合はNoneを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>__contains__(x)</h3>
+<div>x in treeなどで、このAVL木にxが含まれるかを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>poll_first()</h3>
+<div>このAVL木の最小の要素を返し、削除します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>poll_last()</h3>
+<div>このAVL木の最大の要素を返し、削除します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>ceiling(x)</h3>
+<div>x以上で最小の要素を返します。もしそのような要素が存在しない場合はNoneを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>higher(x)</h3>
+<div>xよりも真に大きい最小の要素を返します。もしそのような要素が存在しない場合はNoneを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>floor(x)</h3>
+<div>x以下で最大の要素を返します。もしそのような要素が存在しない場合はNoneを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>lower(x)</h3>
+<div>xよりも真に小さい最大の要素を返します。もしそのような要素が存在しない場合はNoneを返します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<br>
+<h3>clear()</h3>
+<div>このAVL木を空にします。</div>
+<div>\( \mathrm{O(1)} \)です。</div>
+<br>
+<h3>is_empty()</h3>
+<div>このAVL木が空かを返します。</div>
+<div>\( \mathrm{O(1)} \)です。</div>
+<br>
+<h3>tolist()</h3>
+<div>このAVL木と同等のリストを返します。リストの中身は昇順であることが保証されます。</div>
+<div>\( \mathrm{O(N)} \)です。</div>
+<br>
+<h3>__len__()</h3>
+<div>このAVL木の要素数を返します。</div>
+<div>\( \mathrm{O(1)} \)です。</div>
+<br>
+<h3>__del__()</h3>
+<div>このAVL木を削除します。</div>
+<br>
+<h3>__str__()</h3>
+<div>このAVL木を表す文字列を返します。</div>
+<div>このメソッドはstr(tree.tolist())と同等です。</div>
+<div>\( \mathrm{O(N)} \)です。</div>
+<br>
+<h3>__hash__()</h3>
+<div>このAVL木を表すハッシュ値を返します。</div>
+<div>\( \mathrm{O(1)} \)です。</div>
+<br>
+<h3>__setitem__(key, value)</h3>
+<div>このAVL木にkeyが含まれていたらvalueに変換します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<h5>コード例</h5>
+<code class="python">tree[key] = value</code>
+<br>
+<h3>__delitem__(key)</h3>
+<div>このAVL木にkeyが含まれていたら削除します。</div>
+<div>\( \mathrm{O(logN)} \)です。</div>
+<h5>コード例</h5>
+<code class="python">del tree[key]</code>
+<br>
+<div>その他、setと同様に&、|、^、&=、|=、^=、==、!=演算子に対応しています。</div>
+<div>また、+=、-=演算子、iterメソッドにも対応しております。詳しくは実装をご確認ください。</div>
 <br>
 <pre><code class="python">class AVL:
 	class Node:
