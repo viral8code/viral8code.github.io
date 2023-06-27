@@ -35,19 +35,19 @@
 	}
 	private int getIndex(final int index){
 		final int size = size();
-		if(index>=size)
+		if(index&gt=size)
 			throw new IndexOutOfBoundsException("Index "+index+" out of bounds for length "+size);
 		final int id = head+index;
-		return buff.length<=id?id-buff.length:id;
+		return buff.length&lt=id?id-buff.length:id;
 	}
 	private void grow(){
-		int[] newBuff = new int[buff.length<<1];
+		int[] newBuff = new int[buff.length&lt&lt1];
 		arraycopy(0,newBuff,0,size());
 		buff = newBuff;
 	}
 	public int size(){
 		final int size = tail-head;
-		return size<0?size+buff.length:size;
+		return size&lt0?size+buff.length:size;
 	}
 	public void addFirst(final int x){
 		if(previous(head)==tail)
@@ -100,10 +100,10 @@
 		buff[id2] = num;
 	}
 	public void arraycopy(final int fromIndex,final int[] array,final int from,final int length){
-		if(fromIndex+length>size())
+		if(fromIndex+length&gtsize())
 			throw new IndexOutOfBoundsException("last source index "+(fromIndex+length)+" out of bounds for int["+size()+"]");
 		final int h = getIndex(fromIndex);
-		if(h+length<buff.length)
+		if(h+length&ltbuff.length)
 			System.arraycopy(buff,h,array,from,length);
 		else{
 			final int back = buff.length-h;
@@ -169,33 +169,33 @@ class IntDeque{
 	}
 	public void sort(){
 		final int size = size();
-		if(size<16)
+		if(size&lt16)
 			insertionSort(0,size);
 		else
 			quickSort(size);
 	}
 	private void insertionSort(final int l,final int r){
-		for(int i=l+1;i<r;i++){
+		for(int i=l+1;i&ltr;i++){
 			final int num = buff.get(i);
 			int j = i;
 			int temp;
-			while(l<j&&(temp=buff.get(j-1))>num)
+			while(l&ltj&&(temp=buff.get(j-1))&gtnum)
 				buff.set(j--,temp);
 			buff.set(j,num);
 		}
 	}
 	private void mergeSort(final int l,final int r){
-		final int[] stack = new int[r-l<<2];
+		final int[] stack = new int[r-l&lt&lt2];
 		int tail = 0;
 		stack[tail++] = l;
 		stack[tail++] = r;
 		stack[tail++] = 0;
-		while(tail>0){
+		while(tail&gt0){
 			final int query = stack[--tail];
 			final int right = stack[--tail];
 			final int left = stack[--tail];
-			final int mid = left+right>>1;
-			if(right-left<2)
+			final int mid = left+right&gt&gt1;
+			if(right-left&lt2)
 				continue;
 			else if(query==0){
 				stack[tail++] = left;
@@ -214,48 +214,48 @@ class IntDeque{
 				buff.arraycopy(left,array1,0,array1.length);
 				buff.arraycopy(left+array1.length,array2,0,array2.length);
 				int i = 0,j = 0,k = left;
-				while(i<array1.length&&j<array2.length){
-					if(array1[i]<array2[j])
+				while(i&ltarray1.length&&j&ltarray2.length){
+					if(array1[i]&ltarray2[j])
 						buff.set(k++,array1[i++]);
 					else
 						buff.set(k++,array2[j++]);
 				}
-				while(i<array1.length)
+				while(i&ltarray1.length)
 					buff.set(k++,array1[i++]);
-				while(j<array2.length)
+				while(j&ltarray2.length)
 					buff.set(k++,array2[j++]);
 			}
 		}
 	}
 	private void quickSort(final int size){
-		final int[] stack = new int[size+(size<<1)];
+		final int[] stack = new int[size+(size&lt&lt1)];
 		int tail = 0;
 		stack[tail++] = 0;
 		stack[tail++] = size;
 		stack[tail++] = 0;
-		while(tail>0){
+		while(tail&gt0){
 			final int depth = stack[--tail];
 			final int r = stack[--tail];
 			final int l = stack[--tail];
-			if(r-l<2)
+			if(r-l&lt2)
 				continue;
-			if(r-l<16){
+			if(r-l&lt16){
 				insertionSort(l,r);
 				continue;
 			}
-			if(depth>10){
+			if(depth&gt10){
 				mergeSort(l,r);
 				continue;
 			}
-			final int mid = buff.get(r+l>>1);
+			final int mid = buff.get(r+l&gt&gt1);
 			int i = l;
 			int j = r-1;
-			while(i<j){
-				while(i<j&&buff.get(i)<=mid)
+			while(i&ltj){
+				while(i&ltj&&buff.get(i)&lt=mid)
 					++i;
-				while(i<j&&buff.get(j)>mid)
+				while(i&ltj&&buff.get(j)&gtmid)
 					--j;
-				if(i<j)
+				if(i&ltj)
 					buff.swap(i++,j--);
 			}
 			stack[tail++] = l;
