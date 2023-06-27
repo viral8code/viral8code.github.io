@@ -1,0 +1,276 @@
+<html>
+<head>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.0.1/build/styles/devibeans.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.0.1/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body bgcolor="#101010" text="#ffffff" link="#00ffff" alink="#00ff00" vlink="ffff00">
+<title>draft:IntegerRingBuffer_IntDeque</title>
+<h6>更新日:2023/06/27</h6>
+<h1>IntegerRingBufferクラス</h1>
+<div>リングバッファ。雑～に作ったからぶっ壊れてるかも。</div>
+<br>
+<h1>IntDequeクラス</h1>
+<div>できゅ～。下の方にあるよ。ほぼIntegerRingBufferと変わらん。</div>
+<div>ソート出来ること以外に違いはない。多分。あ、toArrayメソッドとか作ってないや。じゃあ劣化版やん。</div>
+<br>
+<pre><code class="Java">final class IntegerRingBuffer{
+	private int[] buff;
+	private int head,tail;
+	public IntegerRingBuffer(){
+		this(16);
+	}
+	public IntegerRingBuffer(final int n){
+		buff = new int[n];
+		head = tail = 0;
+	}
+	private int next(final int index){
+		final int next = index+1;
+		return next==buff.length?0:next;
+	}
+	private int previous(final int index){
+		final int previous = index-1;
+		return previous==-1?buff.length-1:previous;
+	}
+	private int getIndex(final int index){
+		final int size = size();
+		if(index>=size)
+			throw new IndexOutOfBoundsException("Index "+index+" out of bounds for length "+size);
+		final int id = head+index;
+		return buff.length<=id?id-buff.length:id;
+	}
+	private void grow(){
+		int[] newBuff = new int[buff.length<<1];
+		arraycopy(0,newBuff,0,size());
+		buff = newBuff;
+	}
+	public int size(){
+		final int size = tail-head;
+		return size<0?size+buff.length:size;
+	}
+	public void addFirst(final int x){
+		if(previous(head)==tail)
+			grow();
+		head = previous(head);
+		buff[head] = x;
+	}
+	public void addLast(final int x){
+		if(next(tail)==head)
+			grow();
+		buff[tail] = x;
+		tail = next(tail);
+	}
+	public void removeFirst(){
+		if(head==tail)
+			throw new java.util.NoSuchElementException("Buffer is empty");
+		head = next(head);
+	}
+	public void removeLast(){
+		if(head==tail)
+			throw new java.util.NoSuchElementException("Buffer is empty");
+		tail = previous(tail);
+	}
+	public int pollFirst(){
+		if(head==tail)
+			throw new java.util.NoSuchElementException("Buffer is empty");
+		final int ans = buff[head];
+		head = next(head);
+		return ans;
+	}
+	public int pollLast(){
+		if(head==tail)
+			throw new java.util.NoSuchElementException("Buffer is empty");
+		tail = previous(tail);
+		return buff[tail];
+	}
+	public int get(final int index){
+		final int id = getIndex(index);
+		return buff[id];
+	}
+	public void set(final int index,final int x){
+		final int id = getIndex(index);
+		buff[id] = x;
+	}
+	public void swap(final int index1,final int index2){
+		final int id1 = getIndex(index1);
+		final int id2 = getIndex(index2);
+		final int num = buff[id1];
+		buff[id1] = buff[id2];
+		buff[id2] = num;
+	}
+	public void arraycopy(final int fromIndex,final int[] array,final int from,final int length){
+		if(fromIndex+length>size())
+			throw new IndexOutOfBoundsException("last source index "+(fromIndex+length)+" out of bounds for int["+size()+"]");
+		final int h = getIndex(fromIndex);
+		if(h+length<buff.length)
+			System.arraycopy(buff,h,array,from,length);
+		else{
+			final int back = buff.length-h;
+			System.arraycopy(buff,h,array,from,back);
+			System.arraycopy(buff,0,array,from+back,length-back);
+		}
+	}
+	public int[] toArray(){
+		int[] array = new int[size()];
+		arraycopy(0,array,0,size());
+		return array;
+	}
+	public void clear(){
+		head = tail = 0;
+	}
+	@Override
+	public String toString(){
+		int[] array = new int[size()];
+		arraycopy(0,array,0,size());
+		return java.util.Arrays.toString(array);
+	}
+}
+class IntDeque{
+	private final IntegerRingBuffer buff;
+	public IntDeque(){
+		buff = new IntegerRingBuffer();
+	}
+	public IntDeque(final int n){
+		buff = new IntegerRingBuffer(n);
+	}
+	public int size(){
+		return buff.size();
+	}
+	public void clear(){
+		buff.clear();
+	}
+	public void addFirst(final int x){
+		buff.addFirst(x);
+	}
+	public void addLast(final int x){
+		buff.addLast(x);
+	}
+	public void add(final int x){
+		addLast(x);
+	}
+	public void removeFirst(){
+		buff.removeLast();
+	}
+	public void removeLast(){
+		buff.removeFirst();
+	}
+	public int pollFirst(){
+		return buff.pollFirst();
+	}
+	public int pollLast(){
+		return buff.pollLast();
+	}
+	public int get(final int index){
+		return buff.get(index);
+	}
+	public void set(final int index,final int x){
+		buff.set(index,x);
+	}
+	public void sort(){
+		final int size = size();
+		if(size<16)
+			insertionSort(0,size);
+		else
+			quickSort(size);
+	}
+	private void insertionSort(final int l,final int r){
+		for(int i=l+1;i<r;i++){
+			final int num = buff.get(i);
+			int j = i;
+			int temp;
+			while(l<j&&(temp=buff.get(j-1))>num)
+				buff.set(j--,temp);
+			buff.set(j,num);
+		}
+	}
+	private void mergeSort(final int l,final int r){
+		final int[] stack = new int[r-l<<2];
+		int tail = 0;
+		stack[tail++] = l;
+		stack[tail++] = r;
+		stack[tail++] = 0;
+		while(tail>0){
+			final int query = stack[--tail];
+			final int right = stack[--tail];
+			final int left = stack[--tail];
+			final int mid = left+right>>1;
+			if(right-left<2)
+				continue;
+			else if(query==0){
+				stack[tail++] = left;
+				stack[tail++] = right;
+				stack[tail++] = 1;
+				stack[tail++] = left;
+				stack[tail++] = mid;
+				stack[tail++] = 0;
+				stack[tail++] = mid;
+				stack[tail++] = right;
+				stack[tail++] = 0;
+			}
+			else{
+				final int[] array1 = new int[mid-left];
+				final int[] array2 = new int[right-mid];
+				buff.arraycopy(left,array1,0,array1.length);
+				buff.arraycopy(left+array1.length,array2,0,array2.length);
+				int i = 0,j = 0,k = left;
+				while(i<array1.length&&j<array2.length){
+					if(array1[i]<array2[j])
+						buff.set(k++,array1[i++]);
+					else
+						buff.set(k++,array2[j++]);
+				}
+				while(i<array1.length)
+					buff.set(k++,array1[i++]);
+				while(j<array2.length)
+					buff.set(k++,array2[j++]);
+			}
+		}
+	}
+	private void quickSort(final int size){
+		final int[] stack = new int[size+(size<<1)];
+		int tail = 0;
+		stack[tail++] = 0;
+		stack[tail++] = size;
+		stack[tail++] = 0;
+		while(tail>0){
+			final int depth = stack[--tail];
+			final int r = stack[--tail];
+			final int l = stack[--tail];
+			if(r-l<2)
+				continue;
+			if(r-l<16){
+				insertionSort(l,r);
+				continue;
+			}
+			if(depth>10){
+				mergeSort(l,r);
+				continue;
+			}
+			final int mid = buff.get(r+l>>1);
+			int i = l;
+			int j = r-1;
+			while(i<j){
+				while(i<j&&buff.get(i)<=mid)
+					++i;
+				while(i<j&&buff.get(j)>mid)
+					--j;
+				if(i<j)
+					buff.swap(i++,j--);
+			}
+			stack[tail++] = l;
+			stack[tail++] = j+1;
+			stack[tail++] = depth+1;
+			stack[tail++] = i;
+			stack[tail++] = r;
+			stack[tail++] = depth+1;
+		}
+	}
+	@Override
+	public String toString(){
+		return buff.toString();
+	}
+}
+</code></pre>
+</body>
+</html>
